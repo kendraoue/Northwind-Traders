@@ -1,0 +1,98 @@
+﻿@model assignment2WebApp.Controllers.PaginatedList<Order>
+
+@{
+    ViewData["Title"] = "Customer Order";
+    var prevDisabled = Model.HasPreviousPage ? "" : "disabled";
+    var nextDisabled = Model.HasNextPage ? "" : "disabled";
+
+}
+
+
+<h1>@ViewBag.Title</h1>
+<form asp-action="Index" method="get">
+<button type="submit" name="itemsPerPage" value="5" class="btn btn-primary">5 Orders Per Page</button>
+    <button type="submit" name="itemsPerPage" value="10" class="btn btn-primary">10 Orders Per Page</button>
+    <button type="submit" name="itemsPerPage" value="20" class="btn btn-primary">20 Orders Per Page</button>
+</form>
+<ul class="pagination">
+    <li class="page-item @prevDisabled">
+        <a asp-action="Index"
+           asp-route-sortOrder="@ViewBag.SortOrder"
+           asp-route-searchSearch="@ViewBag.SearchString"
+           asp-route-pageNumber="1"
+           class="page-link">First</a>
+    </li>
+    <li class="page-item @prevDisabled">
+        <a asp-action="Index"
+           asp-route-sortOrder="@ViewBag.SortOrder"
+           asp-route-searchSearch="@ViewBag.SearchString"
+           asp-route-pageNumber="@(Model.PageIndex - 1)"
+           class="page-link">Previous</a>
+    </li>
+    <li class="page-item @nextDisabled">
+        <a asp-action="Index"
+           asp-route-sortOrder="@ViewBag.SortOrder"
+           asp-route-searchSearch="@ViewBag.SearchString"
+           asp-route-pageNumber="@(Model.PageIndex + 1)"
+           class="page-link">Next</a>
+    </li>
+    <li class="page-item @nextDisabled">
+        <a asp-action="Index"
+           asp-route-sortOrder="@ViewBag.SortOrder"
+           asp-route-searchSearch="@ViewBag.SearchString"
+           asp-route-pageNumber="@Model.TotalPages"
+           class="page-link">Last</a>
+    </li>
+</ul>
+
+<table class="table">
+    <thead>
+        <tr>
+             <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Customer)
+            </th>
+            <th>
+                Ordered
+            </th>
+           
+            <th>
+               Shipped
+            </th>
+            <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().Freight)
+            </th>
+            <th>
+                    Shipper
+            </th>
+          
+          
+         
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Customer.CompanyName)
+            </td>
+            <td>
+               
+                @Html.DisplayFor(modelItem => item.OrderDate)
+            </td>
+          
+            <td>
+                @Html.DisplayFor(modelItem => item.ShippedDate)
+            </td>
+            <td style="text-align: right">
+                @Html.DisplayFor(modelItem => item.Freight) 
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShipName)
+            </td>
+           
+          
+        </tr>
+}
+    </tbody>
+</table>
